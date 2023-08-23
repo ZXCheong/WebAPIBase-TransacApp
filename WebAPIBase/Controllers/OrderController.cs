@@ -36,8 +36,22 @@ namespace WebAPIBase.Controllers
             }
         }
 
+        [HttpGet("items")]
+        public IActionResult GetItems(int order_id)
+        {
+            using (var connection = new SqlConnection(configuration.GetConnectionString("Default")))
+            {
+                connection.Open();
+
+                var query = "SELECT * FROM Items WHERE order_id = @OrderID";
+                var items = connection.Query<Item>(query, new { OrderID = order_id }).ToList();
+
+                return Ok(items);
+            }
+        }
 
 
-        
+
+
     }
 }
